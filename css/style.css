@@ -1,0 +1,8 @@
+
+/*component*/
+@import "./component/hidden.css";
+@import "./component/reset.css";
+
+/*screen*/
+@import "./screen/video.css";
+
