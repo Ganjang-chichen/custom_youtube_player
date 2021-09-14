@@ -107,24 +107,26 @@ function new_list(name, id, start, end) {
     temp_que.setAttribute("class", "video_que");
     temp_que.innerHTML = `
         <div>
-            <div>영상 상세</div>
-            <input type="text" class="video_conf" value=${name}>
+            <div class="video_que_info">
+                <div>영상 상세</div>
+                <input type="text" class="video_conf" value=${name}>
+            </div>
+            <div class="video_que_conf">
+                <input type="text" class="video_id" placeholder="유튜브 링크" value=${id}>
+                <input type="text" class="video_start" placeholder="시작 시간" value=${start}>
+                <input type="text" class="video_end" placeholder="종료 시간" value=${end}>
+            </div>
         </div>
-        <div>
-            <input type="text" class="video_id" placeholder="유튜브 링크" value=${id}>
-            <input type="text" class="video_start" placeholder="시작 시간" value=${start}>
-            <input type="text" class="video_end" placeholder="종료 시간" value=${end}>
-            <button class="video_que_delete">삭제</button>
-        </div>
+        <button class="video_que_delete">x</button>
     `
 
     temp_que.querySelector(".video_que_delete").addEventListener('click', (e) => {
-        let p = e.target.parentNode;
+        let p = e.target.parentNode.parentNode;
         queBox.removeChild(p);
     });
 
     queBox.appendChild(temp_que);
-    
+    resize_addNewBtn();
 }
 
 var playList_preset = document.querySelector(".playList_preset");
@@ -134,7 +136,7 @@ playList_preset.addEventListener('change', (e) => {
     reader.readAsText(e.target.files[0], "UTF-8");
 
     reader.onload = () => {
-        console.log(reader.result);
+        
         data = JSON.parse(reader.result);
         queBox.innerHTML = '';
         for(let i = 0; i < data.playList.length; i++) {
@@ -146,4 +148,13 @@ playList_preset.addEventListener('change', (e) => {
             );
         }
     };
+});
+
+function resize_addNewBtn() {
+    let addNewBtn = document.querySelector(".video_add_new");
+    addNewBtn.style.width = (document.querySelector(".video_ques").clientWidth - 2) + "px";
+}
+resize_addNewBtn();
+window.addEventListener('resize', (e) => {
+    resize_addNewBtn();
 });

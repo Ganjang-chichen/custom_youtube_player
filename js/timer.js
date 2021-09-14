@@ -1,35 +1,82 @@
+let startBtn = document.querySelector(".video_timer_start");
+let pauseBtn = document.querySelector(".video_timer_pause");
+
 function sleep(sec) {
     return new Promise((resolve) => {
         setTimeout(resolve, sec * 1000);
     });
 }
 
+let PAUSE = false;
+pauseBtn.hidden = true;
+
 async function timer() {
     //await sleep(1);
+    PAUSE = false;
+    let s = document.querySelector(".video_timer").value;
 
-    let t = document.querySelector(".video_timer").value;
+    startBtn.hidden = true;
+    pauseBtn.hidden = false;
 
-    if (!Number(t)){
-        let _t = t.split(':');
+    let h = 0;
+    let m = 0;
+
+    if (!Number(s)){
+        let _t = s.toString().split(':');
+        
         if(_t.length === 2) {
-            if(Number(_t[0]) && Number(_t[1])) {
-                t = Number(_t[0]) * 60 + Number(_t[1]);
+            if(Number(_t[0]) >= 0 && Number(_t[1]) >= 0) {
+                m = Number(_t[0]);
+                s = Number(_t[1]);
             }else {
-                t = 0;
+                s = 0;
             }
         }else if(_t.length === 3) {
-            if(Number(_t[0]) && Number(_t[1]) && Number(_t[2])) {
-                t = Number(_t[0]) * 3600 + Number(_t[1]) * 60 + Number(_t[2]);
+            if(Number(_t[0]) >= 0 && Number(_t[1]) >= 0 && Number(_t[2]) >= 0) {
+                h = Number(_t[0]);
+                m = Number(_t[1]);
+                s = Number(_t[2]);
             }else {
-                t = 0;
+                s = 0;
             }
         }else {
-            t = 0;
+            s = 0;
         }
+    }else {
+        h = parseInt(s / 3600);
+        m = parseInt((s - h * 3600) / 60);
+        s = s % 60;
     }
 
-    await sleep(t);
-    play_alarm()
+    while(h >= 0 && m >= 0 && s >= 0 && !PAUSE){
+        
+        await sleep(1);
+        s--;
+        if(s < 0) {
+            s = 59;
+            m--;
+        }
+        if(m < 0) {
+            m = 59;
+            h--;
+        }
+        document.querySelector(".video_timer").value = `${h}:${m}:${s}`;
+    }
+    if(!PAUSE) {
+        startBtn.hidden = false;
+        pauseBtn.hidden = true;
+        document.querySelector(".video_timer").value = `0:0:0`;
+        play_alarm();
+    }
+    
+}
+
+function pause_timer() {
+    console.log("pause");
+    startBtn.hidden = false;
+    pauseBtn.hidden = true;
+
+    PAUSE = true;
 }
 
 function play_alarm(){
