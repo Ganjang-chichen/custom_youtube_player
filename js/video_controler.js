@@ -117,8 +117,21 @@ function new_list(name, id, start, end) {
                 <input type="text" class="video_end" placeholder="종료 시간" value=${end}>
             </div>
         </div>
+        <button class="video_que_start">▶</button>
         <button class="video_que_delete">x</button>
     `
+    temp_que.querySelector(".video_que_start").addEventListener('click', (e) => {
+        let nodes = document.querySelectorAll('.video_que');
+        let p = e.target.parentNode;
+
+        for(let i = 0; i < nodes.length; i++) {
+            if(nodes[i] === p) {
+                CURRENT_IDX = i;
+                start_play();
+                break;
+            }
+        }
+    });
 
     temp_que.querySelector(".video_que_delete").addEventListener('click', (e) => {
         let p = e.target.parentNode;
@@ -128,6 +141,11 @@ function new_list(name, id, start, end) {
     queBox.appendChild(temp_que);
     resize_addNewBtn();
 }
+
+document.querySelector('.video_que').addEventListener('click', (e) => {
+    CURRENT_IDX = 0;
+    start_play();
+});
 
 var playList_preset = document.querySelector(".playList_preset");
 playList_preset.addEventListener('change', (e) => {

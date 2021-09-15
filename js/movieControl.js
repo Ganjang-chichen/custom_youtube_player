@@ -4,7 +4,7 @@ var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
 let MODE = "rotate";
-let CURRENT_IDX = 0;
+var CURRENT_IDX = 0;
 let ISCHANGING = false;
 
 var player;
@@ -94,3 +94,4 @@ function start_play() {
         }
     }
 }
+
